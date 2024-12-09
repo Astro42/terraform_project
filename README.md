@@ -1,5 +1,3 @@
-# Serverless-Text-Processor-with-AWS-Lambda-API-Gateway-S3-Terraform-and-Python
-
 # Serverless Text Processor with AWS Lambda, API Gateway, S3, Terraform, and Python
 
 ## Step-by-Step Guide to Developing a Serverless App in AWS with Terraform
