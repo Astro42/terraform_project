@@ -293,7 +293,7 @@ This verifies that the Lambda function, API Gateway, and S3 bucket are working c
    - **Why Change to "body"**: The Lambda function expects the text to be under the `body` field to process it correctly.
 
 5. **Test the Lambda**:
-   - After inputting your text in the format above, click **Test**. You’ll see a result notification at the top, and the output will include a **URL** that links to the JSON file containing the top 10 frequent words. 
+   - After inputting your text in the format above, click **Test**. You’ll see a result notification at the top, and the output will include a **URL** that links to the JSON file in out S3 Bucket containing the top 10 frequent words. 
 
 6. **Download the JSON File**:
    - You can download the resulting JSON file by clicking the provided URL.
