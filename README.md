@@ -1,118 +1,51 @@
-# Serverless Text Processor with AWS Lambda, API Gateway, S3, Terraform, and Python
+# Serverless Text Processing Application
 
-## Step-by-Step Guide to Developing a Serverless App in AWS with Terraform
+This is a serverless application designed to process text input, identify the top 10 most frequent words, and store the result in an S3 bucket. It utilizes AWS services such as Lambda, S3, IAM, and API Gateway.
 
-# **Index**
-- **Introduction**
-- **Understanding the Basics**
+## Project Overview
 
-- **Step 1: Download & Install Terraform**
-    - 1.1. Download Terraform
-    - 1.2. Install Terraform on Windows
-    - 1.3. Verify Terraform Installation
+The application provides an HTTP endpoint where users can submit text. The backend, powered by AWS Lambda, processes the text and stores the top 10 frequent words in a JSON file on an S3 bucket. A pre-signed URL is generated for downloading the result.
 
-- **Step 2: Set Up AWS Environment**
-    - 2.1. Create an AWS Account
-    - 2.2. Set Up AWS CLI and Terraform
-        - 2.2.1. Install AWS CLI
-        - 2.2.2. Configure AWS CLI
-    - 2.3. Verify AWS CLI
+### AWS Services Used
 
-- **Step 4: Configure Terraform with AWS Provider**
-    - 4.1. Create a Terraform Project Directory
-    - 4.2. Write Your First Terraform Configuration
-    - 4.3. Initialize Terraform
-    - 4.4. Verify Terraform Configuration
-        - 3.4.1. Validate Configuration
-        - 3.4.2. Plan Your Infrastructure
-        - 3.4.3. Deploy Your Test Infrastructure
-    - 4.5. Check if Our Resources Are Deployed Properly
-        - 3.5.1. Terraform State
-        - 3.5.2. AWS CLI
-        - 3.5.3. AWS Resource Explorer
-    - 4.6. Delete Terraform Resources
-- 
+- **AWS Lambda**: To process the text input and interact with other AWS services.
+- **AWS S3**: To store the JSON output containing the top 10 words.
+- **AWS API Gateway**: To expose the Lambda function as a RESTful API.
+- **IAM Roles and Policies**: For securing and allowing appropriate permissions between Lambda and S3.
 
-## Introduction
-This guide will walk you through setting up a serverless application in AWS using Terraform. The app will:
+## How It Works
 
-- Receive a POST request with text.
-- Process the text to find the top 10 most frequent words.
-- Store the result in a JSON file.
-- Return a URL for downloading the file.
+### Step 1: Deploy the Infrastructure with Terraform
+The infrastructure is defined in the `main.tf` file using Terraform. The deployment consists of:
 
-## Understanding the Basics
+1. **AWS Provider**: Specifies the AWS region for resources.
+2. **S3 Bucket**: A bucket to store the output JSON file.
+3. **Lambda Function**: Processes the text and stores the results in the S3 bucket.
+4. **API Gateway**: Exposes a POST endpoint to interact with the Lambda function.
+5. **IAM Roles**: Necessary for Lambda's access to S3 and API Gateway.
 
-Before diving into the steps, let’s break down the core concepts.
+### Step 2: Lambda Function
+The `count_top_ten_words.py` script is the core of the Lambda function. It performs the following tasks:
 
-1. **Serverless App:**  
-   A serverless app means you don’t manage any servers yourself. Instead, AWS automatically runs your code in response to events like an HTTP request. This makes it easier and cheaper to deploy small apps.
+- Accepts a POST request with raw text.
+- Cleans and processes the text to remove special characters and punctuation.
+- Identifies the 10 most frequent words.
+- Stores the result as a JSON file in an S3 bucket.
 
-2. **POST Request:**  
-   A POST request is a way for clients (like your web browser or an app) to send data to a server. The client sends data (in this case, text) to the server, which processes it.
+### Step 3: Requesting Text Processing
 
-3. **Terraform:**  
-   Terraform is a tool that helps you manage cloud infrastructure. With Terraform, you can write configuration files to describe your cloud resources (like AWS Lambda functions and storage), and Terraform will create or modify these resources for you automatically.
+The `sample_request.py` file is used to test the API by sending a POST request to the API Gateway endpoint with the text. Once the Lambda function processes the text, it returns a download URL for the JSON file containing the top 10 words.
 
-4. **JSON File:**  
-   A JSON file is a way to store data in a text format that's easy for machines to read. It will be used here to store the list of the most frequent words.
+## Prerequisites
 
+- **Terraform**: To deploy the AWS infrastructure.
+- **AWS CLI**: For configuring your AWS credentials.
+- **Python 3.x**: To run the Lambda function and test it locally.
 
+## Setup and Deployment
 
-
-
-## **Step 1: Download & Install Terraform**
-
-### 1.1. **Download Terraform**  
-Visit the [Terraform download page](https://developer.hashicorp.com/terraform/install#windows) and download the appropriate version for your OS. We will be using Windows for this demo.
-
-### 1.2. **Install Terraform on Windows**
-Follow these steps to install and configure it on your Windows machine:
-- Extract the `.zip` file to a directory (e.g., `C:\terraform`).
-- Add this directory to your system's `Path` environment variable:
-    - Right-click **Start**, type "Environment Variables," and select **Edit the system environment variables**.
-    - Click **Environment Variables** > **System variables** > **Path** > **Edit** > **New**, and add `C:\terraform`.
-
-### 1.3. **Verify Terraform Installation**
-Open **Command Prompt** and type:
-```
-terraform -v
-```
-This should display the version of Terraform that was installed. If it shows the version number, you're all set!
-
----
-
-## **Step 2: Set Up AWS Environment**
-
-### 2.1. **Create an AWS Account**
-- Go to the [AWS website](https://aws.amazon.com/) and create an account.
-- Follow the steps for entering your personal details and payment method.
-- Log into the [AWS Management Console](https://console.aws.amazon.com/).
-
-### 2.2. **Set Up AWS CLI and Terraform**
-Before you can use Terraform to create resources on AWS, you need to configure the AWS CLI with your AWS credentials (Access Key and Secret Key).
-
-#### 2.2.1. **Install AWS CLI**
-- Visit the [AWS CLI installation page for Windows](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-windows.html).
-- Download and run the installer.
-
-#### 2.2.2. **Configure AWS CLI**
-Open **Command Prompt** as **Administrator** and run the following command in **Command Prompt**:
-```
-aws configure
-```
-It will prompt you for the following details:
-- **AWS Access Key ID**: You can find this in your [AWS IAM console](https://console.aws.amazon.com/iam/home). If you don’t have one, create a new IAM user with `AdministratorAccess` and note the Access Key ID and Secret Access Key.
-- **AWS Secret Access Key**: Same as above.
-- **Default region name**: Choose a region close to you, for example, `us-east-1`.
-- **Default output format**: You can leave this as `json`.
-
-### 2.3. **Verify AWS CLI**
-To verify that AWS CLI is configured properly, run the following:
-```
-aws sts get-caller-identity
-```
-This will display your IAM user information.
-
----
-
+1. Clone this repository to your local machine.
+2. Install Terraform and AWS CLI, and configure them with your AWS credentials.
+3. Initialize Terraform:
+   ```bash
+   terraform init
