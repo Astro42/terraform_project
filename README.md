@@ -162,33 +162,33 @@ Now, let’s walk through how to execute the Terraform file:
 
 a. **Initialize Terraform**:
    - Run the following command to initialize Terraform and download the necessary provider plugins:
-     ```bash
+     ```
      terraform init
      ```
 
 b **Validate the Configuration**:
    - This step checks if the configuration files are syntactically correct:
-     ```bash
+     ```
      terraform validate
      ```
 
 c. **Preview the Deployment**:
    - To see what changes Terraform will make to your AWS environment, run:
-     ```bash
+     ```
      terraform plan
      ```
    - Review the plan to ensure that everything looks good before applying the changes.
 
 d. **Apply the Configuration**:
    - To create the AWS resources defined in the `main.tf` file, run:
-     ```bash
+     ```
      terraform apply
      ```
    - Terraform will ask for your approval to proceed with the deployment. Type `yes` to confirm.
 
 e. **View the Resources**:
    - To list all the resources Terraform has created, run:
-     ```bash
+     ```
      terraform state list
      ```
 
@@ -208,7 +208,7 @@ These output values save you the trouble of manually navigating the AWS Console 
    
 2. **Run the Script**:
    - Run the script with the command:
-     ```bash
+     ```
      python sample_request.py
      ```
 
@@ -275,7 +275,7 @@ Error: error deleting S3 Bucket: BucketNotEmpty: The bucket you tried to delete 
 To handle this, you can clear the bucket's contents before destroying the resource. To delete the contents of an S3 bucket, run:
 
 ```
-aws s3 rm s3://sample-s3-bucket --recursive
+aws s3 rm s3://s3-bucket-name --recursive
 ```
 Once the S3 bucket is empty, you can run `terraform destroy` again to remove the bucket itself.
 
@@ -283,7 +283,7 @@ Alternatively, you can use the `force_destroy` argument in your Terraform config
 
 ```
 resource "aws_s3_bucket" "serverless_app_bucket" {
-  bucket = "sample-s3-bucket"
+  bucket = "s3-bucket-name"
   force_destroy = true
 }
 ```
