@@ -1,10 +1,12 @@
-## Introduction
-This guide will walk you through setting up a serverless application in AWS using Terraform. The app will:
+# Introduction
 
-- Receive a POST request with text.
-- Process the text to find the top 10 most frequent words.
-- Store the result in a JSON file.
-- Return a URL for downloading the file.
+This guide will walk you through setting up a serverless application in AWS using Terraform. The application will:
+
+- **Receive a POST Request**: An HTTP request will send text data to an API Gateway endpoint.
+- **Process the Text**: AWS Lambda will process the received text to find the top 10 most frequent words. Lambda is a serverless compute service that runs code in response to events, without the need to provision or manage servers.
+- **Store the Results**: The processed data (top 10 frequent words) will be stored in an S3 bucket as a JSON file. Amazon S3 (Simple Storage Service) is used to store and retrieve any amount of data, including JSON files.
+- **Return a URL**: The application will generate a URL that links to the stored JSON file, so you can download the result.
+
 
 ## Understanding the Basics
 
@@ -295,3 +297,40 @@ This verifies that the Lambda function, API Gateway, and S3 bucket are working c
 
 6. **Download the JSON File**:
    - You can download the resulting JSON file by clicking the provided URL.
+  
+
+## **Delete Terraform Resources**
+
+When you're done testing or want to clean up your AWS resources, you can use the `terraform destroy` command to delete the resources managed by Terraform. This is important because it ensures that resources are removed in a controlled manner, preventing unnecessary charges and potential conflicts with future deployments.
+
+To delete all the resources defined in your Terraform configuration, run:
+```
+terraform destroy
+```
+This command will prompt you to confirm before proceeding. It will then show a summary of what will be destroyed.
+
+**Important Note:**  
+If the S3 bucket you created is not empty, Terraform will fail to delete it. The error message you’ll see is:
+```
+Error: error deleting S3 Bucket: BucketNotEmpty: The bucket you tried to delete is not empty.
+```
+To handle this, you can clear the bucket's contents before destroying the resource. To delete the contents of an S3 bucket, run:
+
+```
+aws s3 rm s3://sample-s3-bucket --recursive
+```
+Once the S3 bucket is empty, you can run `terraform destroy` again to remove the bucket itself.
+
+Alternatively, you can use the `force_destroy` argument in your Terraform configuration for the S3 bucket to automatically delete the contents when the bucket is destroyed. Here's how to update your configuration:
+
+```
+resource "aws_s3_bucket" "serverless_app_bucket" {
+  bucket = "sample-s3-bucket"
+  force_destroy = true
+}
+```
+With this configuration, Terraform will delete the contents of the bucket as part of the `terraform destroy` process, avoiding the "BucketNotEmpty" error.
+
+
+
+
