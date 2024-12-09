@@ -1,6 +1,6 @@
 import requests
 
-GATEWAY_URL = "https://fgtne97hc7.execute-api.us-east-1.amazonaws.com" # paste the URL of the API Gateway from terraform
+GATEWAY_URL = " <paste the URL of the API Gateway from terraform here> " 
 ENDPOINT = "/process_text"
 
 def process_text(text: str):
