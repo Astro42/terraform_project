@@ -1,3 +1,15 @@
+## Introduction
+This guide will walk you through setting up a serverless application in AWS using Terraform. The app will:
+
+- Receive a POST request with text.
+- Process the text to find the top 10 most frequent words.
+- Store the result in a JSON file.
+- Return a URL for downloading the file.
+
+## Understanding the Basics
+
+Before diving into the steps, let’s break down the core concepts.
+
 ## Understanding the Basics
 
 Before diving into the steps, let’s break down the core concepts.
