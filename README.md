@@ -292,7 +292,7 @@ With this configuration, Terraform will delete the contents of the bucket as par
 
 ## Step 10: My opinions on making it production ready
 
-1. Using regex for tokenizing text can sometimes cause problems, especially with words that have commas or hyphens. For example, in the sentence "Mary, Jane, and John's friend, Mary-Jane, loves pizza," regex might break "Mary-Jane" into two words instead of keeping it as one. Tools like SpaCy or NLTK are better at fixing this because they can more accurately split text into tokens. However, the downside is that using SpaCy or NLTK in cloud production can be expensive. They need strong computing power and extra setup for managing their dependencies. Also, scaling these tools for large workloads can be a challenge, which could increase costs.
+1. Using regex for tokenizing text can sometimes cause problems, especially with words that contain commas or hyphens. For example, in the sentence "Mary, Jane, and John's friend, Mary-Jane, loves pizza," regex may break "Mary-Jane" into two words instead of keeping it as one or might incorrectly combine it as "MaryJane." Tools like SpaCy or NLTK are better at addressing this issue because they can more accurately split text into tokens. However, the downside is that using SpaCy or NLTK in cloud production can be expensive. They require significant computing power and extra setup for managing dependencies. Additionally, scaling these tools for large workloads can be challenging, which could increase costs.
 
 2. If too many people use my API at once, Lambda might not handle it well. I need to make sure Lambda can scale up to handle more requests. I can also set limits on how many requests it can handle at once to avoid overloading.
    
