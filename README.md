@@ -104,8 +104,8 @@ Once AWS CLI is installed, you need to configure it with your AWS credentials:
    - When prompted, enter the following details:
      - **AWS Access Key ID**: Enter the Access Key ID you generated earlier.
      - **AWS Secret Access Key**: Enter the Secret Access Key you generated earlier.
-     - **Default region name**: Enter the default AWS region (e.g., `us-east-1`).
-     - **Default output format**: You can leave this as `json` or choose your preferred format.
+     - **Default region name**: Enter your AWS region (e.g., `us-east-1`).
+     - **Default output format**: You can leave this as `json`.
 
 3. **Verify AWS CLI Configuration:**
    - To confirm that AWS CLI is configured correctly, you can run a test command, such as listing your S3 buckets:
