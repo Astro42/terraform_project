@@ -8,7 +8,7 @@ import unicodedata  # Handles special characters like accents
 
 # Step 1: Set up the S3 bucket name
 # Use an environment variable to make it easy to change later
-S3_BUCKET_NAME = "iriusrisk-tech-challenge-bucket-12345"
+S3_BUCKET_NAME = "tech-challenge-bucket-12345"
 
 # Step 2: Define the main function (AWS Lambda will run this)
 def count_top_ten_words(event, context):
