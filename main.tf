@@ -8,7 +8,7 @@ provider "aws" {
 
 # 2. Create an S3 Bucket for Storage
 resource "aws_s3_bucket" "serverless_app_bucket" {
-  bucket = "iriusrisk-tech-challenge-bucket-12345"  # The globally unique name of your S3 bucket
+  bucket = "tech-challenge-bucket-12345"  # The globally unique name of your S3 bucket
 }
 # Why: An S3 bucket is required to store the JSON file with the top 10 words.
 # This bucket will be accessed by the Lambda function.
